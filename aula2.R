@@ -20,3 +20,31 @@ View(Familias2)
 load("~/C:/Users/14086606798/Desktop/Base_de_dados-master/CARROS.RData")
 View("CARROS")
  
+#segunda parte da aula - 29/08/2023
+
+summary(restaurante)
+
+summary(Familias2)
+
+#1. na base de dados familia temos a renda (variavel quantitativa) armazenado como texto.
+#2. na base de dados carros o tipo de marcha (variavel qualitativa) esta como quantitativo.
+#3.temos o problema de caracter especial na base de dAdos fam.
+
+CARROS$TipodeMarcha = ifelse(CARROS$TipodeMarcha==0,"automatico","manual")
+
+CARROS$Tipodecombustivel = ifelse(CARROS$Tipodecombustivel==0,"Gas","alcool")
+
+tabela_comb = table(CARROS$Tipodecombustivel)
+tabela_marcha = table(CARROS$TipodeMarcha)
+
+prop.table(tabela_comb) #quantidade dividido pelo total
+round(prop.table((tabela_comb)*100,1) #arredondar uma casa decimal
+
+#criar grafico de pizza
+pie(tabela_comb
+
+#colocar um titulo
+pie(tabela_comb, col=c("#D400FF","pink"))
+
+#saber as cores
+colors() 
