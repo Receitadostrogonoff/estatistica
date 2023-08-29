@@ -1,0 +1,110 @@
+---
+title: "aula02"
+author: "yasmin"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+vamos fazer uma analise de variavel qualitativa.
+
+para isso, vamos importar os dados, fazer um tratamento dos dados, fazerc tabelas,proporções e gráficos.
+
+## fase 1 - importar os dados
+
+
+
+
+```{r}
+
+load("C:/Users/14086606798/Desktop/Base_de_dados-master/CARROS.RData")
+
+#View(CARROS)
+
+#CARROS$TipodeMarcha = ifelse(CARROS$TipodeMarcha==0,"automatico","manual")
+
+#CARROS$Tipodecombustivel = ifelse(CARROS$Tipodecombustivel==0,"Gas","alcool")
+
+#tabela_comb = table(CARROS$Tipodecombustivel)
+#tabela_marcha = table(CARROS$TipodeMarcha)
+
+#prop.table(tabela_comb) #quantidade dividido pelo total
+#round(prop.table((tabela_comb)*100,1) #arredondar uma casa decimal
+
+#criar grafico de pizza
+
+#pie(tabela_comb, col=c("#D400FF","blue"))
+```
+
+Problemas indentificados na aula 
+
+1. na base de dados familia temos a renda (variavel quantitativa) armazenado como texto.
+2. na base de dados carros o tipo de marcha (variavel qualitativa) esta como quantitativo.
+3.temos o problema de caracter especial na base de dAdos fam.
+
+depois dos problemas resolvido vamos fazer uma tabela de proporção a seguir
+
+
+##fase 2 
+#TABELAS E PROPORÇÕES 
+
+```{r}
+View(CARROS)
+
+CARROS$TipodeMarcha = ifelse(CARROS$TipodeMarcha==0,"automatico","manual")
+
+CARROS$Tipodecombustivel = ifelse(CARROS$Tipodecombustivel==0,"Gas","alcool")
+
+tabela_comb = table(CARROS$Tipodecombustivel)
+tabela_marcha = table(CARROS$TipodeMarcha)
+
+prop.table(tabela_comb) #quantidade dividido pelo total
+prop.table(tabela_marcha)
+
+```
+
+## passo 3
+
+
+
+# GRAFICOS DE PIZZA
+aqui vemos as variaveis qualitativas em formato de grafico pizza
+
+```{r}
+#criar grafico de pizza
+pie(tabela_comb, col=c("#D400FF","blue"), main="meu grafico de pizza")
+pie(tabela_marcha, col=c("orange", "grey"), main="meu grafico de pizza")
+```
+
+
+#GRAFICO DE BARRA
+aqui vemos as variaveis qualitativas em formato de grafico de barra
+
+```{r}
+barplot(tabela_comb, col=c("#D400FF","blue"), main= "meu grafico de barras")
+barplot(tabela_marcha, col=c("orange","grey"), main ="meu grafico de barras")
+
+```
+
+
+#grafico de waffles
+```{r}
+
+library(waffle)
+partes = c(Alcool=44,Gas=46)
+waffle(partes, colors= c("pink","blue"))
+
+```
+
+
+# CONCLUSÃO 
+
+TEMOS MAIS CARROS A GASOLINA DO QUE CARRO A ALCOOL NA BASE DE DADOS.
+
+TEMOS MAIS CARROS DO TIPO AUTOMATICO QUE MANUAL NESTA BASE DE DADOS.
+
+```
+
