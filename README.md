@@ -1,2 +1,2 @@
 # estatistica
-feitos na aulas
+feitos na aulas  de estatistica
