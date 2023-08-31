@@ -1,0 +1,68 @@
+---
+title: "tentativa 3 deve de casa 2"
+author: "Yasmin"
+date: "2023-08-31"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## passo 1 - importar arquivo por csv ##
+
+modelo apresentado: temperaturas da cidade do rio de janeiro e da cidade de brasilia.
+
+```{r}
+library(readxl)
+temp <- read_excel("C:/Users/Micro/Downloads/temp2.xlsx")
+View(temp)
+
+```
+
+foi utilizado o excel e o csv.
+
+## utlisar o prop table ##
+
+```{r}
+#prop.table(tabela_bra) #quantidade dividido pelo total
+#prop.table(tabela_rio)
+
+tabela_bra = table(temp2$ "BRASILIA")
+tabela_rio = table(temp2$ "RIO")
+
+prop.table(tabela_bra) #quantidade dividido pelo total
+prop.table(tabela_rio)
+```
+
+
+## passo 2 -  grafico de pizza ##
+
+```{r}
+
+pie(tabela_rio, col=c("#D400FF","blue"), main="meu grafico de pizza - rio temperatura")
+pie(tabela_bra, col=c("orange", "grey"), main="meu grafico de pizza - brasilia temperatura")
+
+pie(tabela_rio, tabela_bra, col=c("salmon", "yellow"), main="meu grafico de pizza - rio e brasilia temperatura")
+
+
+```
+
+problema no ultimo grafico: não consegui deixar de forma satisfatoria.
+
+## passo 3 ##
+
+```{r}
+
+barplot(tabela_rio, col=c("#D400FF","blue"), main= "meu grafico de barras - rio")
+barplot(tabela_bra, col=c("orange","grey"), main ="meu grafico de barras - brasilia")
+barplot(tabela_rio, tabela_bra, col=c("salmon", "yellow"), main="meu grafico de pizza - rio e brasilia temperatura")
+
+
+
+```
+
+
+
+```

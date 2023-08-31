@@ -1,0 +1,89 @@
+---
+title: "dever de casa 2 (tentativa2)"
+author: "Yasmin"
+date: "2023-08-31"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## passo 1 - importar arquivo por csv ##
+
+modelo apresentado: temperaturas da cidade do rio de janeiro e da cidade de brasilia.
+
+```{r}
+library(readxl)
+temp <- read_excel("C:/Users/Micro/Downloads/temp.xlsx")
+View(temp)
+
+```
+
+foi utilizado o excel e o csv.
+
+## utlisar o prop table ##
+
+```{r}
+
+tabela_bra = table(temp$`BRASILIA`)
+tabela_rio = table(temp$`RIO`)
+tabela_hora = table(temp$`HORA (UTC)`)
+
+prop.table(tabela_bra) #quantidade dividido pelo total
+prop.table(tabela_rio)
+
+#prop.table(tabela_hora) #quantidade dividido pelo total
+tabela_hora[temp$`HORA (UTC)`]*100 # tentativa de multiplicação
+
+```
+
+
+## passo 2 -  grafico de pizza ##
+
+```{r}
+
+pie(tabela_rio, col=c("#D400FF","blue"), main="meu grafico de pizza - rio temperatura")
+pie(tabela_bra, col=c("orange", "grey"), main="meu grafico de pizza - brasilia temperatura")
+
+pie(tabela_rio, tabela_bra, col=c("salmon", "yellow"), main="meu grafico de pizza - rio e brasilia temperatura")
+
+
+```
+
+problema no ultimo grafico: não consegui deixar de forma satisfatoria.
+
+## passo 3 - grafico em barra##
+
+```{r}
+
+barplot(tabela_rio, col=c("#D400FF","blue"), main= "meu grafico de barras - rio")
+barplot(tabela_bra, col=c("orange","grey"), main ="meu grafico de barras - brasilia")
+barplot(tabela_rio, tabela_bra, col=c("salmon", "yellow"), main="meu grafico de pizza - rio e brasilia temperatura")
+
+
+```
+
+
+## passo 4 - grafico de waffles ##
+
+
+```{r}
+
+#library(waffle)
+#waffle(tabela_bra, tabela_rio, colors= c("pink", "blue"))
+#waffle(tempetura, colors= c("pink","blue"))
+
+#partes = c("tabela_bra"=24, "tabela_rio"=24)
+#waffle(partes, colors= c("pink","blue"))
+
+parts <- c(One=80, Two=30, Three=20, Four=10)
+chart <- waffle(parts, rows=8)
+# print(chart)
+
+
+```
+
+```
+
