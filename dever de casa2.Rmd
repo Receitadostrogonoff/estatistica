@@ -1,0 +1,112 @@
+---
+title: "dever de casa 2"
+author: "yasmin"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+vamos fazer uma analise de variavel qualitativa.
+
+para isso, vamos importar os dados, fazer um tratamento dos dados, fazer as tabelas, as proporções e os gráficos.
+
+
+## fase 1 - importar os dados
+
+```{r}
+
+load("C:/Users/14086606798/Desktop/Base_de_dados-master/Eleicoes/prefeito_1Turno.Rdata")
+
+View(prefeito_1Turno)
+summary(prefeito_1Turno)
+
+```
+
+
+## fase 2 - tratamento de dados
+
+
+```{r}
+tiponome = table(prefeito_1Turno$SIGLA_PARTIDO)
+prop.table(tiponome)
+
+round(prop.table((tiponome)*100,1))
+
+```
+
+
+##passo 3 - gráficos
+
+# GRAFICO DE barras
+Aqui vemos as variaveis qualitativas em formato de grafico barras
+
+
+
+```{r}
+
+as.numeric(tiponome) #transformar em float
+
+#numeros de partidos = 37 partidos
+par(cex=0.5)
+barplot(tiponome, col=c("#D400FF","blue","wheat1","violetred4","slategrey",
+                        "pink4","palegreen4","aliceblue", "beige", "beige",
+                        "bisque" ,"cadetblue1","chocolate1","orangered","oldlace",
+                        "palegoldenrod","lavenderblush","honeydew","ivory2","ivory1",
+                        "powderblue","purple" ,"purple1","purple2","purple3","red1",
+                        "tan3","firebrick3","gray1","gold4","dodgerblue4","floralwhite",
+                        "gray21","gray12","olivedrab4", "gold2"),
+        main= "Número de integrantes por partido")
+
+
+#saber as cores
+#colors()
+
+```
+
+
+# GRAFICO DE PIZZA
+Aqui vemos as variaveis qualitativas em formato de grafico pizza
+
+```{r}
+
+as.numeric(tiponome) #transformar em float
+
+#numeros de partidos = 37 partidos
+par(cex=0.5) # para diminuir a fonte
+pie(tiponome, col=c("#D400FF","blue","wheat1","violetred4","slategrey",
+                        "pink4","palegreen4","aliceblue", "beige", "beige",
+                        "bisque" ,"cadetblue1","chocolate1","orangered","oldlace",
+                        "palegoldenrod","lavenderblush","honeydew","ivory2","ivory1",
+                        "powderblue","purple" ,"purple1","purple2","purple3","red1",
+                        "tan3","firebrick3","gray1","gold4","dodgerblue4","floralwhite",
+                        "gray21","gray12","olivedrab4", "gold2"),
+        main= "Número de integrantes por partido")
+
+```
+
+## Conclusão - interpretação
+
+Foi necessario transformar o object em float para que fosse utilizados os dados.
+
+1. os graficos possuem 37 partidos
+
+2. O partido MDB apareceu nos dois gráficos como o o numeros de integrantes por partidos.
+
+3. o grafico de estilo pizza  aparenta estar  poluído visualmente.
+
+4. Segundo o ibpad, esta poluição visual seria um erro em introduzir muitas categorias.
+
+## solução para o erro de muitas categorias.
+
+Utilizar pizzas para dados dicotômicos. é o único dado que faz realmente sentido utilizar pizza. Serve para você dar a dimensão de contraposição muito bem. O ideal é seguir as outras dicas: coloque cor apenas na modalidade que você está analisando, agrupe as demais e ela deveria ficar em primeiro na pizza. Mesmo se ela não for a modalidade maior, vai te ajudar a interpretar melhor o seu gráfico.
+
+
+
+```
+
+
+
