@@ -1,0 +1,70 @@
+---
+title: "aula 03"
+author: "yasmin"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# introdução
+
+no encontro de hoje, vamos estudar média, a mediana, a amplitude e o desvio padrão,
+
+media e mediana são medidas de posição(encontrar o meio de um conjunto de dados).
+
+##exemplos
+
+```{r}
+load("C:/Users/14086606798/Desktop/Base_de_dados-master/CARROS.RData")
+
+View(CARROS)
+summary(CARROS)
+
+mean(CARROS$Kmporlitro)
+
+#os carros dessa base de dados fazem em media 20 km/l
+
+#desvio padrão
+
+sd(CARROS$Kmporlitro)
+
+#fazem em media 20 km/l com desvio padrão de 6 km/l
+
+mean(CARROS$Preco)
+ # tem em media o praço de 230 mil.
+
+sd(CARROS$Preco)
+
+max(CARROS$Preco) - min(CARROS$Preco)
+
+#por que usamos os devio padrão e não a amplitude
+#por causa dos outliers
+
+dados1 = c(1,2,3,4)
+mean(dados1)
+
+dados2 = c(1,2,3,4,50000)
+mean(dados2)
+
+
+#50000 é um outlier
+
+median(dados2)
+median(dados1)
+
+#na presença de outliers,a mediana é melhor que a média  
+# o desvio padrão é sempre melhor que a amplitude.
+
+```
+
+## conclusão
+
+1. O número 50000 é considerado um **outlier**
+
+2. na presença do outliers, a mediana é melhor  que a média. para todos os outros  casos, a média  é mais utilizada que a mediana .
+
+3. o desvio padrão é sempre melhor que a amplitude. para mensurar.
