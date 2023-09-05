@@ -1,0 +1,131 @@
+---
+title: "aula 3 - histograma"
+author: "yasmin"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#chamar o arquivo que será utilizado
+
+```{r}
+load("C:/Users/14086606798/Desktop/Base_de_dados-master/CARROS.RData")
+
+```
+
+```{r}
+load("C:/Users/14086606798/Desktop/Base_de_dados-master/CARROS.RData")
+
+View(CARROS)
+summary(CARROS)
+
+
+```
+ 
+## media
+ 
+```{r}
+mean(CARROS$Kmporlitro)
+
+mean(CARROS$Preco)
+
+```
+os carros dessa base de dados fazem em media 20 km/l.
+os carros tem em media o preço de 230 mil.
+ 
+## desvio padrão
+
+```{r}
+#desvio padrão
+
+sd(CARROS$Kmporlitro)
+sd(CARROS$Preco)
+max(CARROS$Preco) - min(CARROS$Preco)
+
+```
+
+
+fazem em media 20 km/l com desvio padrão de 6 km/l
+
+_ por que usamos os devio padrão e não a amplitude?
+- por causa dos outliers.
+
+## OUTLIERS
+
+```{r}
+
+dados1 = c(1,2,3,4)
+mean(dados1)
+
+dados2 = c(1,2,3,4,50000)
+mean(dados2)
+
+
+median(dados2)
+median(dados1)
+
+
+```
+
+50000 é um outlier.
+
+Na presença de outliers,a mediana é melhor que a média  
+O desvio padrão é sempre melhor que a amplitude.
+
+
+## criação de um histograma
+```{r}
+# criação de histograma
+
+hist(CARROS$Kmporlitro)
+
+hist((CARROS$Kmporlitro), col = "tan", main = "histograma",
+     xlab = "km/l", ylab = "frequencia")
+
+hist((CARROS$Preco), col = "salmon", main = "histograma 2 ",
+     xlab = "km/l", ylab = "frequencia")
+
+
+
+hist((CARROS$Peso), col = "pink", main = "histograma 3 ",
+     xlab = "km/l", ylab = "frequencia")
+
+
+
+hist((CARROS$RPM), col = "brown", main = "histograma 4 ",
+     xlab = "km/l", ylab = "frequencia")
+
+```
+
+conclusão 1 :  Ele é assimetrico a direita.
+
+conclusão 2 :  Ele é assimetrico a direito com 2 modas.
+
+conclusão 3 :  Ele é outliers e assimetrico
+
+conclusão 4 :  Ele é outliers e assimetrico.
+
+## sobre o histograma e o grafico de barras.
+
+1. o histograma é para variaveis quantitativas.
+
+2. o gráfico de barras é para variaveis qualitativas.
+
+3. o histograma pode mostrar a presença de outliers 
+
+4. o  histograma pode ser unimodal ou bimodal.
+
+
+## Criação de um dotchart
+
+```{r}
+
+# dot chart para numero de valvulas
+dotchart(CARROS$NumdeValvulas, labels = row.names(mtcars),
+         cex = 0.9, xlab = "valvulas")
+```
+
+     
