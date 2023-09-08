@@ -1,0 +1,68 @@
+---
+title: "dever de casa 3"
+author: "Yasmin Macaio"
+date: "2023-09-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+este é o dever de casa numero 3.
+
+Aqui vos falo sobre o histograma aprendido em aula e solicitado como atividade para casa.
+
+**O que é um histograma?**
+
+é utilizado para visualizar a distribuição de uma variável numérica.como tambem, os Histogramas são uma forma de exibir a distribuição de um conjunto de dados, representando o número ou a porcentagem de observações cujos valores se enquadram dentro de intervalos numéricos predefinidos e, em seguida, plotando esses números ou porcentagens em um gráfico de barras. 
+
+**O que é um outlier**
+
+Os outliers são dados que se diferenciam drasticamente de todos os outros.  um outlier é um valor que foge da normalidade e que pode causar anomalias nos resultados obtidos por meio de algoritmos e sistemas de análise.
+
+
+**código utilizado para o histograma**
+
+```{r}
+#dever de casa 3
+
+library(readxl)
+AptosCriciuma <- read_excel("C:/Users/Micro/Downloads/AptosCriciuma.xls")
+View(AptosCriciuma)
+```
+
+**passo 1 - vizualizar a media, mediana e o desvio padrão **
+
+
+```{r}
+#tema escolhido : valor dos apartamentos de criciuma
+
+#media
+mean(AptosCriciuma$Valor)
+
+#mediana - não utilizarei.
+#median(AptosCriciuma$Valor)
+
+#desvio padrão
+sd(AptosCriciuma$Valor)
+```
+
+**resultados**
+
+média:Os apartamentos na cidade de criciuma possuem em media o valor de R$ 107.5063.
+
+desvio padrão: Os apartamentos na cidade de criciuma possuem um desvio padrão o valor de R$90.73032.
+
+
+**passo 2 - criação e a interpretação do gráfico**
+
+
+```{r}
+hist((AptosCriciuma$Valor), col = "tan", main = "histograma do valor dos apartamentos na cidade de criciuma",
+     xlab = "Valor dos apartamentos (em mil).", ylab = "frequência")
+```
+
+**interpretação**
+
+o histograma apresentado é unimodal,não possui outliers e é classificado como assimetrico positivo/á direita.
