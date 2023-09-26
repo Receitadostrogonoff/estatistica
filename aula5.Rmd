@@ -1,0 +1,80 @@
+---
+title: "Duas variaveis"
+author: "yasmin"
+date: "2023-09-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#tarefa 04 - Duas variaveis qualitativas
+
+# fase 1 - carregar a base de dados
+
+```{r}
+
+
+load("C:/Users/14086606798/Downloads/Game of Thrones.RData")
+
+```
+
+#fase 2 - inspecionar a base de dados - saber o sexo dos personagens
+
+```{r}
+tail(personagens_livro$sexo)
+```
+
+##fase 3 - importar as blibliotecas##
+
+```{r}
+
+#install.packages("dplyr")
+library(dplyr)
+library(flextable)
+library(janitor)
+
+```
+
+
+# fase 4 -  nomear as classe sociais #
+
+```{r}
+#0 = nao nobre e 1 = nobre
+
+personagens_livro$nobre = ifelse(personagens_livro$nobre==0,"Não nobre","nobre")
+
+tabela = table(personagens_livro$sexo, personagens_livro$nobre)
+
+```
+
+
+## implementar proporção ##
+
+```{r}
+#proporção de mulheres para homens
+janitor::tabyl(personagens_livro,sexo,nobre) %>%
+  adorn_percentages("row") %>%
+  adorn_pct_formatting(digits = 2) %>%
+  adorn_ns %>% flextable() %>% theme_zebra()
+
+
+```
+
+
+##conclusão ##
+```{r}
+barplot(tabela, main = "sexo dos personagens",
+        col=c("tan","blue"), beside = TRUE, 
+        legend.text = rownames(tabela),
+        args.legend = list(x = "topleft"))
+
+```
+
+
+O universo de game of thrones possui uma ambiente masculino, logo o numero de homens é maior que o numero de mulheres.
+
+possui um numero de homens não nobres maior do que um de nobres.
+
+possui um numero de mulheres nobres maior do que o numero de não nobres.
+
