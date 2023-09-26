@@ -1,0 +1,123 @@
+---
+title: "revisão de matematica - variavel quantitativa"
+author: "MACAIO, YASMIN"
+date: "2023-09-26"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# introdução a revisão#
+
+Neste encontro vamos carregar a base de dados , dar uma olhada na base de dados, corrigir os problemas e demonstrar resultados.
+
+# importação #
+
+para importar vamos usar a função read_excel
+
+```{r}
+
+library(readxl)
+
+QE <- read_excel("C:/Users/14086606798/Desktop/Base_de_dados-master/Questionario_Estresse.xls")
+head(QE)
+
+
+```
+
+# olhar a base de dados#
+
+aqui vamos usar as funçoes summery, view e str para olhar a base de dados
+
+```{r}
+
+summary(QE)
+
+str(QE)
+
+```
+
+
+# transformção da base de dados#
+tudo que tiver 1 e 2 vai virar "sim ou "não"
+
+a turma 1,2 e 3 devem virar "A" , "B' e "C"
+
+```{r}
+
+QE$Trabalha = ifelse(QE$Trabalha==1, "sim", "não")
+QE$Mora_pais = ifelse(QE$Mora_pais==1, "sim", "não") 
+QE$RJ = ifelse(QE$RJ==1, "sim", "não")
+QE$Namorado_a = ifelse(QE$Namorado_a==1,"sim", "não")
+
+QE$Turma = ifelse(QE$Turma==1,"turma A",
+                  ifelse(QE$Turma==2, "turma B", "Turma C"))
+
+```
+
+# pergunta - Será que o problema foi resolvido#
+
+```{r}
+
+summary(QE)
+head(QE)
+str(QE)
+
+```
+
+# questões#
+
+quem trabalha tem um desempenho pior?
+quem namora tem um desmpenho pior?
+quem mora com os pais tem um desempenho melhor?
+
+A turma b possui um melhor dempenho melhor que as outras turmas?
+
+
+# desenho de pesquisa#
+
+# variavel explicada#
+desempenho do estudante
+
+# variavel explicativas#
+trabalha, namora, mora com os pais e turma
+
+# analise de dados# 
+
+média por grupos. vamos fazer o desempenho medio de quem trabalha e de quem não trabalha.
+
+```{r, message = FALSE, warning= FALSE}
+library(dplyr) # para criar estatisticas
+library(flextable) # para criar as tabelas no rmarkdowmn
+
+
+#janitor::tabyl(Trabalha, Desempenho) %>%
+#  adorn_percentages("row") %>%
+#  adorn_pct_formatting(digits = 2) %>%
+#  summarise(média = mean(Desempenho),
+#            desvio_padrao = sd(Desempenho)) %<%
+#  adorn_ns %>% flextable() %>% theme_zebra()
+
+
+QE %>% select(Trabalha, Desempenho) %>% 
+  group_by(Trabalha) %>% 
+  summarise(média = mean(Desempenho),
+            desvio_padrao = sd(Desempenho)) %>%
+  flextable() %>% theme_tron()
+
+```
+
+quem trabalha tem nota 8.5
+quem trabalha tem nota 8.6
+
+
+as notas não interferem na nota do estudante. a diferença é de 0.1.
+
+1. recomendamos permitir o estudante a trabalhar, pois o trabalho não atrapalha o desempenho,
+2. O namoro não afeta o desenmpenho.
