@@ -1,0 +1,120 @@
+---
+title: "pokemon - A5"
+author: "Yasmin macaio"
+date: "2023-10-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## sobre o desenho pokemon
+
+## importar a base de dados
+
+```{r}
+QE <- load("C:/Users/14086606798/Downloads/df_pokemon.Rdata")
+```
+
+## fase 2 - inspecionar a base de dados - saber a altura dos personagens (pokemons)
+
+```{r}
+
+tail(df$height)
+
+summary(df)
+
+```
+
+## fase 3 - importar as blibliotecas
+
+```{r}
+
+library(dplyr)
+library(flextable)
+library(janitor)
+```
+
+## fase 4 - chamar a tabela da altura e implementar a proporção
+
+```{r}
+tabela = table(df$height)
+
+#proporção dos bichos(para altura)
+
+janitor::tabyl(df, height) %>%
+  adorn_percentages("row") %>%
+  adorn_pct_formatting(digits = 2) %>%
+  adorn_ns %>% flextable() %>% theme_tron()
+```
+
+
+##proporção dos bichos(para peso)
+```{r}
+tabela2 = table(df$weight)
+
+janitor::tabyl(df, weight)%>%
+  adorn_percentages("row") %>%
+  adorn_pct_formatting(digits = 2) %>%
+  adorn_ns %>% flextable() %>% theme_tron()
+```
+
+
+## fase 5 - verificar as variaveis para a altura
+
+```{r}
+
+#media
+mean(df$height)
+
+#mediana
+median(df$height)
+
+#desvio padrão
+sd(df$height)
+
+```
+
+##  fase 6 - verificar as variaveis peso
+
+```{r}
+
+#media
+mean(df$weight)
+
+#mediana
+median(df$weight)
+
+#desvio padrão
+sd(df$weight)
+
+```
+
+
+##tabela de barras de altura 
+```{r}
+tabela = table(df$height)
+
+barplot(tabela, main = "alturas dos pokemons",
+        col=c("tan","blue","pink","brown"), beside = TRUE, 
+        legend.text = rownames(tabela),
+        args.legend = list(x = "topleft"))
+```
+
+devido da grande quantidade de pokemons é observado que as variaveis.
+
+para altura:
+
+media = 11.40669
+mediana = 10
+desvio padrão = 10.31993
+
+para peso:
+
+media = 568.1657
+mediana = 280
+desvio padrão = 901.1062
+
+## conclusão
+existem mais pokemons "baixos" do que "altos".
