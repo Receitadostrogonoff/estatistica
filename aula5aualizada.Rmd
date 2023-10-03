@@ -1,0 +1,255 @@
+---
+title: "revisão de matematica - variavel quantitativa"
+author: "MACAIO, YASMIN"
+date: "2023-10-03"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# introdução a revisão#
+
+Neste encontro vamos carregar a base de dados , dar uma olhada na base de dados, corrigir os problemas e demonstrar resultados.
+
+# importação #
+
+para importar vamos usar a função read_excel
+
+```{r}
+
+library(readxl)
+
+QE <- read_excel("C:/Users/14086606798/Desktop/Base_de_dados-master/Questionario_Estresse.xls")
+head(QE)
+
+
+library(readxl)
+BasesEstados <- read_excel("C:/Users/14086606798/Desktop/Base_de_dados-master/BasesEstados.xlsx")
+View(BasesEstados)
+
+
+```
+
+# olhar a base de dados#
+
+aqui vamos usar as funçoes summery, view e str para olhar a base de dados
+
+```{r}
+
+summary(QE)
+
+str(QE)
+
+```
+
+
+# transformção da base de dados#
+tudo que tiver 1 e 2 vai virar "sim ou "não"
+
+a turma 1,2 e 3 devem virar "A" , "B' e "C"
+
+```{r}
+#limpeza de dados
+
+QE$Trabalha = ifelse(QE$Trabalha==1, "sim", "nao")
+QE$Mora_pais = ifelse(QE$Mora_pais==1, "sim", "nao") 
+QE$RJ = ifelse(QE$RJ==1, "sim", "nao")
+QE$Namorado_a = ifelse(QE$Namorado_a==1,"sim", "nao")
+
+QE$Turma = ifelse(QE$Turma==1,"turma A",
+                  ifelse(QE$Turma==2, "turma B", "Turma C"))
+
+```
+
+# pergunta - Será que o problema foi resolvido#
+
+```{r}
+
+summary(QE)
+head(QE)
+str(QE)
+
+```
+
+# questões#
+
+quem trabalha tem um desempenho pior?
+quem namora tem um desmpenho pior?
+quem mora com os pais tem um desempenho melhor?
+
+A turma b possui um melhor dempenho melhor que as outras turmas?
+
+
+# desenho de pesquisa#
+
+# variavel explicada#
+desempenho do estudante
+
+# variavel explicativas#
+trabalha, namora, mora com os pais e turma
+
+# analise de dados# 
+
+média por grupos. vamos fazer o desempenho medio de quem trabalha e de quem não trabalha.
+
+```{r, message = FALSE, warning= FALSE}
+library(dplyr) # para criar estatisticas
+library(flextable) # para criar as tabelas no rmarkdowmn
+
+
+#janitor::tabyl(Trabalha, Desempenho) %>%
+#  adorn_percentages("row") %>%
+#  adorn_pct_formatting(digits = 2) %>%
+#  summarise(média = mean(Desempenho),
+#            desvio_padrao = sd(Desempenho)) %<%
+#  adorn_ns %>% flextable() %>% theme_zebra()
+
+
+QE %>% select(Trabalha, Desempenho) %>% 
+  group_by(Trabalha) %>% 
+  summarise(media = mean(Desempenho),
+            desvio_padrao = sd(Desempenho)) %>%
+  flextable() %>% theme_tron()
+
+```
+
+quem trabalha tem nota 8.5
+quem trabalha tem nota 8.6
+
+
+as notas não interferem na nota do estudante. a diferença é de 0.1.
+
+1. recomendamos permitir o estudante a trabalhar, pois o trabalho não atrapalha o desempenho,
+2. O namoro não afeta o desenmpenho.
+
+## importar a base de dados de estados
+
+```{r}
+#QE$Trabalha = ifelse(QE$Trabalha==1, "sim", "nao")
+
+#QE$Mora_pais = ifelse(QE$Mora_pais==1, "sim", "nao") 
+
+#QE$RJ = ifelse(QE$RJ==1, "sim", "nao")
+
+#QE$Namorado_a = ifelse(QE$Namorado_a==1,"sim", "nao")
+
+#QE$Turma = ifelse(QE$Turma==1,"turma A",
+#                  ifelse(QE$Turma==2, "turma B", "Turma C"))
+
+library(dplyr)
+
+library(flextable)
+
+QE %>% group_by(Trabalha) %>% summarise(media=mean(Horas_estudo),
+                                       desvio_padrao=sd(Horas_estudo))
+
+summary(QE$Horas_estudo)
+
+```
+
+
+#boxplot é uma analise grafica 
+
+```{r}
+
+boxplot(QE$Horas_estudo ~ QE$Trabalha,
+        col = c ("red","blue"),
+        main = "grafico 1 - boxplot das horas de estudo por trabalho") #fazendo um box plot e o til representa por cor 
+
+boxplot(QE$Desempenho ~ QE$Trabalha,
+        col = c ("tan","salmon"),
+        main = "grafico 1 - boxplot por desempenho por trabalho") #fazendo um box plot e o til representa por cor 
+
+boxplot(QE$Desempenho ~ QE$Turma,
+        col = c ("tan","salmon", "purple"),
+        main = "grafico 1 - boxplot por desempenho de turma") #fazendo um box plot e o til representa por cor 
+
+```
+
+## hipotese não foi verificada
+
+## duvida  -- qual turma estuda mais qual turma estuda menos?
+
+## dados especiais
+
+```{r}
+
+
+library(geobr)
+desenho_estados = read_state()
+
+class(BasesEstados)
+class(desenho_estados)
+plot(desenho_estados)
+
+class(desenho_estados$code_state)
+class(BasesEstados$Codigo)
+
+BasesEstados$Codigo = as.numeric(BasesEstados$Codigo)
+
+library(dplyr)
+
+
+ 
+BasesEstados = BasesEstados %>% rename(code_state=Codigo) #troca o nome da coluna
+
+mapa_idh_gini = desenho_estados %>% left_join(BasesEstados)
+
+#vizualize
+library(ggplot2)
+library(RColorBrewer)
+
+mapa1= ggplot() + 
+  geom_sf(data=mapa_idh_gini, aes(fill=IDH))
+  scale_fill_distiller(palette = "Reds", direction = 1, name="indice de  Gini",
+                     limits = c(0.48,0.66))
+
+summary(BasesEstados$Mortalidade_infantil)
+
+mapa2 = ggplot() + 
+  geom_sf(data=mapa_idh_gini, aes(fill=Mortalidade_infantil))
+  scale_fill_distiller(palette = "Purples", direction = 1, name="mortalidade infantil",
+                       limits = c(11,29))
+  
+summary(BasesEstados$Taxa_analfabetismo)
+  
+mapa3 = ggplot() + 
+  geom_sf(data=mapa_idh_gini, aes(fill=Taxa_analfabetismo))
+  scale_fill_distiller(palette = "Reds", direction = 1, name="taxa analfabetismo",
+                       limits = c(11,29))
+  
+display.brewer.all()
+
+#usar no projeto
+  
+library(plotly)  
+ggplotly(mapa1)
+ggplotly(mapa2)
+ggplotly(mapa3)
+
+
+```
+
+```{r}
+
+#imagem do mapa
+library(leaflet)
+mapa_lea = leaflet() %>%
+  addTiles() %>%
+  addCircles(lng= -43.1688718, lat= -22.954635, popup= "estamos aqui")
+
+mapa_lea
+mapa_lea %>% addProviderTiles(providers$Esri.WorldImagery)
+mapa_lea %>% addProviderTiles(providers$CartoDB.Positron)
+
+```
+
+
+
+
