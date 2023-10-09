@@ -1,0 +1,89 @@
+---
+title: "A5.2 - uma qualitativa versus uma quantitativa usando o boxplot"
+author: "Macaio, Yasmin"
+date: "2023-10-09"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Sobre o Boxplot
+
+ O boxplot é uma maneira padronizada de exibir a distribuição de um conjunto de dados com base em seu resumo de cinco números de pontos de dados: o "mínimo", primeiro quartil [Q1], mediana, terceiro quartil [Q3] e "máximo"
+ 
+ os  Boxplots podem dizer-lhe sobre seus outliers e quais são seus valores. Eles também podem informar se seus dados são simétricos, quão estreitamente seus dados estão agrupados e se e como seus dados estão distorcidos.
+ 
+ 
+## como funciona o calculo do boxplot
+*Mediana* (percentil Q2/50): O valor médio do conjunto de dados
+
+*Primeiro quartil* (percentil Q1/25): O número médio entre o menor número (não o "mínimo") e a mediana do conjunto de dados.
+
+*Terceiro quartil* (percentil Q3/75): O valor médio entre a mediana e o valor mais alto (não o "máximo") do conjunto de dados.
+
+*Intervalo Interquartil* (IIQ): percentil 25 a 75.
+
+*Outliers: observações fora do normal, são mostrados como circulo.
+
+*Mínimo*: Q1 - 1.5*IQR
+
+*Máximo*: Q3 + 1.5*IQ
+
+ 
+## codigo do trabalho a ser realizado por mim
+
+#Passo 1 - importação do arquivo que será utilizado
+
+```{r}
+library(readxl)
+questionario_usp <- read_excel("C:/Users/14086606798/Downloads/questionario_usp.xlsx")
+View(questionario_usp)
+
+
+```
+
+Usaremos o boxplot da linguagem R.
+
+## foi feito dois tipos de  graficos para serem avaliados.
+
+# Gráfico 1 - se refere a idade dos estudantes versus o numeros de filhos.
+
+```{r}
+# duvida apresentada 1 -  quantos filhos possui os estudantes e sua idade
+
+boxplot(questionario_usp$Idade ~ questionario_usp$Filhos,
+        col = c ("tan","salmon", "purple"),
+        main = "Gráfico 1 - boxplot por idade de quem tem filhos")
+
+```
+
+
+# Conclusão 1 
+
+possui 4 outliers no numero 1 de filhos.
+O maior numero de filhos são 2 entre a faixa etaria dos 18 até 22.
+
+
+# Gráfico 2 - se refere a idade dos estudantes versus o numeros de horas expostos a Tv.
+
+```{r}
+
+# duvida apresentada 2 - quantas horas de Tv quanta idade realiza 
+
+boxplot(questionario_usp$Idade ~ questionario_usp$TV,
+        col = c ("red","orange", "yellow","green","blue","purple",
+                      "salmon","grey","brown","#4393C3","#2166AC"),
+        main = " Gráfico 2 - boxplot por idade versus horas assistidas de tv")
+
+```
+
+
+# Conclusão 2 
+
+Entre o numero de horas assistidas de 10 horas e 14 horas, possui dois outliers.
+
