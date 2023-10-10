@@ -1,0 +1,85 @@
+---
+title: "mapa rio de janeiro"
+author: "Macaio, Yasmin"
+date: "2023-10-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## O que é a esperança de vida ao nascer?
+
+
+
+## passo 1 - extrair da base de dados que ser5á usada
+
+```{r}
+#extrair da base de dados
+
+library(readxl)
+BasesMunicipios <- read_excel("C:/Users/14086606798/Desktop/Base_de_dados-master/BasesMunicipios.xlsx")
+View(BasesMunicipios)
+
+
+```
+
+## passo 2 - importar as blibliotecas
+
+```{r}
+#blibliotecas que serão usadas para o mapa.
+
+library(ggplot2)
+library(geobr)
+library(dplyr)
+library(RColorBrewer)
+library(sf)
+library(plotly)
+
+
+```
+
+
+#Passo 3 - criar o mapa do estado do Rio de janeiro.
+
+
+```{r}
+#para ler os municipos do RJ
+
+desenho_municipios = read_municipality(code_muni = "RJ", showProgress = FALSE)
+
+
+class(BasesMunicipios)
+class(desenho_municipios)
+plot(desenho_municipios)
+
+class(desenho_municipios$code_muni)
+class(BasesMunicipios$`COD IBGE`)
+
+BasesMunicipios$`COD IBGE2` = as.numeric(BasesMunicipios$`COD IBGE2`)
+
+#aq parou
+BasesMunicipios1 <-desenho_municipios %>% left_join(BasesMunicipios, by = c( "code_muni"="COD IBGE2"))
+
+
+summary(BasesMunicipios1$Esperancadevida)
+
+mapa3 = ggplot() + 
+  geom_sf(data=BasesMunicipios1, aes(fill=Esperancadevida)) +
+  scale_fill_distiller(palette = "Reds", direction = 1, name="esperança de vida ao nascer",
+                       limits = c(71,77))
+ggplotly(mapa3)
+
+```
+
+
+
+
+## hipoteses
+
+**hipotese 1** : A região N-ENE do estado do Rio de Janeiro possui menos esperança de vida ao nascer do que a região SO-NO do estado do Rio de janeiro.
+
+**hipotese 2** : A região metropolitana possui mais esperança de vida ao nascer do que as demais regiões, entretanto existem intraregiões que possuem uma esperança de vida alta assim como a região metropolitana.
+
+**hipotese 3** : Os municipios industrializados e os que possuem a uma melhor qualidade de vida possuem uma maior esperança de vida ao nascer do que os demais municipios.
