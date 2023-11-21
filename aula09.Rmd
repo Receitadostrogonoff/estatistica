@@ -1,0 +1,343 @@
+---
+title: "revisão de matematica - variavel quantitativa"
+author: "MACAIO, YASMIN"
+date: "2023-11-21"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# introdução a revisão#
+
+Neste encontro vamos carregar a base de dados , dar uma olhada na base de dados, corrigir os problemas e demonstrar resultados.
+
+# importação #
+
+para importar vamos usar a função read_excel
+
+```{r}
+
+library(readxl)
+
+QE <- read_excel("C:/Users/14086606798/Desktop/Base_de_dados-master/Questionario_Estresse.xls")
+head(QE)
+
+
+library(readxl)
+BasesEstados <- read_excel("C:/Users/14086606798/Desktop/Base_de_dados-master/BasesEstados.xlsx")
+View(BasesEstados)
+
+
+```
+
+# olhar a base de dados#
+
+aqui vamos usar as funçoes summery, view e str para olhar a base de dados
+
+```{r}
+
+summary(QE)
+
+str(QE)
+
+```
+
+
+# transformção da base de dados#
+tudo que tiver 1 e 2 vai virar "sim ou "não"
+
+a turma 1,2 e 3 devem virar "A" , "B' e "C"
+
+```{r}
+#limpeza de dados
+
+QE$Trabalha = ifelse(QE$Trabalha==1, "sim", "nao")
+QE$Mora_pais = ifelse(QE$Mora_pais==1, "sim", "nao") 
+QE$RJ = ifelse(QE$RJ==1, "sim", "nao")
+QE$Namorado_a = ifelse(QE$Namorado_a==1,"sim", "nao")
+
+QE$Turma = ifelse(QE$Turma==1,"turma A",
+                  ifelse(QE$Turma==2, "turma B", "Turma C"))
+
+```
+
+# pergunta - Será que o problema foi resolvido#
+
+```{r}
+
+summary(QE)
+head(QE)
+str(QE)
+View(QE)
+
+```
+
+# questões#
+
+quem trabalha tem um desempenho pior?
+quem namora tem um desmpenho pior?
+quem mora com os pais tem um desempenho melhor?
+
+A turma b possui um melhor dempenho melhor que as outras turmas?
+
+
+# desenho de pesquisa#
+
+# variavel explicada#
+desempenho do estudante
+
+# variavel explicativas#
+trabalha, namora, mora com os pais e turma
+
+# analise de dados# 
+
+média por grupos. vamos fazer o desempenho medio de quem trabalha e de quem não trabalha.
+
+```{r, message = FALSE, warning= FALSE}
+library(dplyr) # para criar estatisticas
+library(flextable) # para criar as tabelas no rmarkdowmn
+
+
+#janitor::tabyl(Trabalha, Desempenho) %>%
+#  adorn_percentages("row") %>%
+#  adorn_pct_formatting(digits = 2) %>%
+#  summarise(média = mean(Desempenho),
+#            desvio_padrao = sd(Desempenho)) %<%
+#  adorn_ns %>% flextable() %>% theme_zebra()
+
+
+QE %>% select(Trabalha, Desempenho) %>% 
+  group_by(Trabalha) %>% 
+  summarise(media = mean(Desempenho),
+            desvio_padrao = sd(Desempenho)) %>%
+  flextable() %>% theme_tron()
+
+```
+
+quem trabalha tem nota 8.5
+quem trabalha tem nota 8.6
+
+
+as notas não interferem na nota do estudante. a diferença é de 0.1.
+
+1. recomendamos permitir o estudante a trabalhar, pois o trabalho não atrapalha o desempenho,
+2. O namoro não afeta o desenmpenho.
+
+## importar a base de dados de estados
+
+```{r}
+#QE$Trabalha = ifelse(QE$Trabalha==1, "sim", "nao")
+
+#QE$Mora_pais = ifelse(QE$Mora_pais==1, "sim", "nao") 
+
+#QE$RJ = ifelse(QE$RJ==1, "sim", "nao")
+
+#QE$Namorado_a = ifelse(QE$Namorado_a==1,"sim", "nao")
+
+#QE$Turma = ifelse(QE$Turma==1,"turma A",
+#                  ifelse(QE$Turma==2, "turma B", "Turma C"))
+
+library(dplyr)
+
+library(flextable)
+
+QE %>% group_by(Trabalha) %>% summarise(media=mean(Horas_estudo),
+                                       desvio_padrao=sd(Horas_estudo))
+
+summary(QE$Horas_estudo)
+
+```
+
+
+#boxplot é uma analise grafica 
+
+```{r}
+
+boxplot(QE$Horas_estudo ~ QE$Trabalha,
+        col = c ("red","blue"),
+        main = "grafico 1 - boxplot das horas de estudo por trabalho") #fazendo um box plot e o til representa por cor 
+
+boxplot(QE$Desempenho ~ QE$Trabalha,
+        col = c ("tan","salmon"),
+        main = "grafico 1 - boxplot por desempenho por trabalho") #fazendo um box plot e o til representa por cor 
+
+boxplot(QE$Desempenho ~ QE$Turma,
+        col = c ("tan","salmon", "purple"),
+        main = "grafico 1 - boxplot por desempenho de turma") #fazendo um box plot e o til representa por cor 
+
+```
+
+## hipotese não foi verificada
+
+## duvida  -- qual turma estuda mais qual turma estuda menos?
+
+## dados especiais
+
+
+
+```{r}
+
+#imagem do mapa
+library(leaflet)
+mapa_lea = leaflet() %>%
+  addTiles() %>%
+  addCircles(lng= -43.1688718, lat= -22.954635, popup= "estamos aqui")
+
+mapa_lea
+mapa_lea %>% addProviderTiles(providers$Esri.WorldImagery)
+mapa_lea %>% addProviderTiles(providers$CartoDB.Positron)
+
+```
+
+
+
+```{r}
+QE$Mora_pais  = ifelse(QE$Mora_pais == 1, "sim", "não")
+QE$Namorado_a = ifelse(QE$Namorado_a == 1, "sim", "não")
+QE$RJ         = ifelse(QE$RJ == 1, "sim", "não")
+QE$trabalha   = ifelse(QE$Trabalha == 1,  "sim", "não")
+QE$Turma      = ifelse(QE$Turma == 1,  "sim", "não")
+
+
+```
+
+quem trabalha estuda menos?
+
+variavel resposta = horas de estudo
+variavel explicativa = trabalha
+
+#1. histograma 
+#2. qq-plot
+#3. teste de normalidade 
+
+H0: os dados seguem uma distribuição normal
+H1: os dados não seguem uma distribuição normal
+
+alpha: 0.5 
+se pvalor <=  alpha rej H0
+se pvalor > alpha não rej H0
+
+
+```{r}
+shapiro.test(QE$Horas_estudo)
+options(scipen = 999)
+
+```
+
+conclusão: horas de estudo não seguem uma distribuição normal
+
+
+para responder essa pergunta, o teste adequado é o mann- whitney(wilcoxon)
+
+H0: os dois grupos são amostrados de populações com distribuições identicas.
+H1: os dois grupos são amostrados de populações com distribuições diferentes.
+
+alpha: 0.5
+
+se pvalor<= alpha REJ H0
+se pvalor > alpha não rej 
+H0
+
+```{r}
+wilcox.test(QE$Horas_estudo ~ QE$Trabalha)
+```
+
+os dois grupos tem a mesma distribuição.
+em outras palavras, quem trabvalha e estuda tanto quanto quem não trabalha.
+
+hipotese: quem namora tem um desempenhos pior?
+
+```{r}
+
+shapiro.test(QE$Desempenho)
+wilcox.test(QE$Desempenho ~ QE$Namorado_a)
+
+```
+
+Pvalor < alpha rej H0
+
+não tem a mesma distribuição
+conclusao ; a distribuiçao de desempenho quem namora não é a mesma de quem não namora
+
+a turma 1 estuda mais que a turma 3.
+a variavel horas de estudos não é normal.
+
+
+H0: As tres turmas tem a mesma distribuição de horas de estudos.
+H1: Pelo menos uma turma com distribuição diferente.
+
+alpha: 0.5
+se pvalor<= alpha REJ H0
+se pvalor > alpha não rej H0
+
+
+pairwise.test 
+
+```{r}
+
+shapiro.test(QE$Estresse)
+
+```
+
+não rej H0
+os dados seguem uma distribuição normal 
+a variavel estrese tem uma distribuição em formato de sino
+pressuposto de  normalidade atendido
+
+H0: sigma 2t   = sigma2nt (as variancias são iguais)
+H1: sigma 2t ! = sigma2nt (as variancias são diferentes)
+
+alpha: 0.05
+
+```{r}
+
+bartlett.test(QE$Estresse ~ QE$trabalha)
+
+```
+ pressuposto atendido
+ 
+ o procedimento é a anova (analise de variancia)
+ 
+ 
+```{r}
+modelo = aov(QE$Estresse ~ QE$trabalha)
+modelo
+summary(modelo)
+```
+ 
+ a turma 3 é a mais estressada
+ pressuposto de normalidade
+ estresse tem distribuição normal
+ 
+ pressuposto de igualdade de variancia
+ H0: sigmat1 = sigmat2 = sigmat3
+ H1: pelo menos um sigma diferente
+ 
+```{r}
+bartlett.test(QE$Estresse ~ QE$Turma )
+```
+não rej h0
+as variancias são iguais
+pressuposto de igualdade de variancia atendida 
+devo usar a anova
+
+
+h0: mut1 = mut2 = mut3
+h1: pelo menos uma turma com a media diferente
+
+```{r}
+modelo2 =  aov(QE$Estresse ~ QE$Turma)
+summary(modelo2)
+TukeyHSD(modelo2)
+plot(TukeyHSD(modelo2))
+
+```
+ como o pvalor é 0.29 a turma 2 é a mais estressada em media que a turma 3
+ 
+ 
